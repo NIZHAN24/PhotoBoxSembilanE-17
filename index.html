@@ -65,7 +65,7 @@
             height: auto;
             border-radius: 10px;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
-            border: 5px solid #A27B5C;
+            border: 5px solid #A27B5C; /* Border konsisten */
         }
         .controls-container {
             display: flex;
@@ -126,7 +126,6 @@
             
             let img = document.createElement('img');
             img.src = canvas.toDataURL('image/png', 1.0);
-            img.style.border = "5px solid #A27B5C";
             photoStrip.appendChild(img);
         }
 
