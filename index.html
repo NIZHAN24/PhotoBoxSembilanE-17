@@ -66,7 +66,6 @@
             border-radius: 10px;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
             border: 5px solid #A27B5C;
-            position: relative;
         }
         .controls-container {
             display: flex;
@@ -74,24 +73,6 @@
             align-items: center;
             margin-top: 10px;
             gap: 10px;
-        }
-        .delete-button {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            background: red;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            font-size: 14px;
-            line-height: 20px;
-            text-align: center;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #b30000;
         }
         footer {
             margin-top: 20px;
@@ -146,27 +127,14 @@
             let img = document.createElement('img');
             img.src = canvas.toDataURL('image/png', 1.0);
             img.style.border = "5px solid #A27B5C";
-            
-            let div = document.createElement('div');
-            div.style.position = "relative";
-            
-            let deleteButton = document.createElement('button');
-            deleteButton.innerText = "✖";
-            deleteButton.classList.add('delete-button');
-            deleteButton.onclick = function () {
-                photoStrip.removeChild(div);
-            };
-            
-            div.appendChild(img);
-            div.appendChild(deleteButton);
-            photoStrip.appendChild(div);
+            photoStrip.appendChild(img);
         }
 
         function downloadPhotos() {
             let canvasDownload = document.createElement('canvas');
             let ctx = canvasDownload.getContext('2d');
             canvasDownload.width = 1080;
-            canvasDownload.height = 1440;
+            canvasDownload.height = 1600;
             
             let images = document.querySelectorAll('.photo-strip img');
             if (images.length < 4) {
@@ -177,8 +145,17 @@
             images.forEach((img, index) => {
                 let x = (index % 2) * 540;
                 let y = Math.floor(index / 2) * 720;
-                ctx.drawImage(img, x, y, 540, 720);
+                ctx.fillStyle = "#A27B5C";
+                ctx.fillRect(x, y, 540, 720);
+                ctx.drawImage(img, x + 10, y + 10, 520, 700);
             });
+            
+            ctx.fillStyle = "#A27B5C";
+            ctx.fillRect(0, 1440, 1080, 160);
+            ctx.fillStyle = "white";
+            ctx.font = "bold 50px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText("Sembilan E", 540, 1520);
             
             let link = document.createElement('a');
             link.download = 'PhotoBoxNizhan.jpg';
