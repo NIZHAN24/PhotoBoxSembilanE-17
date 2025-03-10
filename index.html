@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PhotoBoxSembilanE'17</title>
+    <title>PhotoBox9e'17</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -54,9 +54,11 @@
         }
         .photo-strip {
             display: flex;
-            flex-direction: column;
+            flex-wrap: wrap;
             gap: 10px;
             align-items: center;
+            justify-content: center;
+            max-width: 420px;
         }
         .photo-strip img {
             width: 200px;
@@ -73,6 +75,24 @@
             margin-top: 10px;
             gap: 10px;
         }
+        .delete-button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: red;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 14px;
+            line-height: 20px;
+            text-align: center;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #b30000;
+        }
         footer {
             margin-top: 20px;
             padding: 10px;
@@ -83,7 +103,7 @@
     </style>
 </head>
 <body>
-    <header>PhotoBoxSembilanE'17</header>
+    <header>PhotoBox</header>
     <div class="container">
         <div class="photo-box" id="photoBox">
             <video id="video" autoplay></video>
@@ -102,7 +122,6 @@
         let canvas = document.getElementById('canvas');
         let context = canvas.getContext('2d');
         let photoStrip = document.getElementById('photoStrip');
-        let selectedBorderColor = "#A27B5C";
         
         function startCamera() {
             navigator.mediaDevices.getUserMedia({ video: true })
@@ -115,8 +134,8 @@
         }
 
         function takePhoto() {
-            if (photoStrip.children.length >= 3) {
-                alert("Anda sudah mengambil 3 foto!");
+            if (photoStrip.children.length >= 4) {
+                alert("Anda sudah mengambil 4 foto!");
                 return;
             }
             
@@ -125,41 +144,48 @@
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
             
             let img = document.createElement('img');
-            img.src = canvas.toDataURL('image/jpeg', 1.0);
-            img.style.borderColor = selectedBorderColor;
-            img.style.borderWidth = "5px";
-            img.style.borderStyle = "solid";
+            img.src = canvas.toDataURL('image/png', 1.0);
+            img.style.border = "5px solid #A27B5C";
             
-            photoStrip.appendChild(img);
+            let div = document.createElement('div');
+            div.style.position = "relative";
+            
+            let deleteButton = document.createElement('button');
+            deleteButton.innerText = "✖";
+            deleteButton.classList.add('delete-button');
+            deleteButton.onclick = function () {
+                photoStrip.removeChild(div);
+            };
+            
+            div.appendChild(img);
+            div.appendChild(deleteButton);
+            photoStrip.appendChild(div);
         }
 
         function downloadPhotos() {
-            if (photoStrip.children.length < 3) {
-                alert("Harap ambil 3 foto terlebih dahulu!");
+            let canvasDownload = document.createElement('canvas');
+            let ctx = canvasDownload.getContext('2d');
+            canvasDownload.width = 1080;
+            canvasDownload.height = 1440;
+            
+            let images = document.querySelectorAll('.photo-strip img');
+            if (images.length < 4) {
+                alert("Harap ambil 4 foto sebelum mengunduh!");
                 return;
             }
-            let mergedCanvas = document.createElement('canvas');
-            let mergedCtx = mergedCanvas.getContext('2d');
-            mergedCanvas.width = canvas.width;
-            mergedCanvas.height = canvas.height * 3;
-            photoStrip.querySelectorAll('img').forEach((img, index) => {
-                let image = new Image();
-                image.src = img.src;
-                image.onload = function () {
-                    mergedCtx.drawImage(image, 0, index * canvas.height, canvas.width, canvas.height);
-                    mergedCtx.strokeStyle = selectedBorderColor;
-                    mergedCtx.lineWidth = 10;
-                    mergedCtx.strokeRect(0, index * canvas.height, canvas.width, canvas.height);
-                    if (index === 2) {
-                        let link = document.createElement('a');
-                        link.download = "PhotoBox9e17.jpg";
-                        link.href = mergedCanvas.toDataURL("image/jpeg", 1.0);
-                        link.click();
-                    }
-                };
+            
+            images.forEach((img, index) => {
+                let x = (index % 2) * 540;
+                let y = Math.floor(index / 2) * 720;
+                ctx.drawImage(img, x, y, 540, 720);
             });
+            
+            let link = document.createElement('a');
+            link.download = 'PhotoBoxNizhan.jpg';
+            link.href = canvasDownload.toDataURL('image/jpeg', 1.0);
+            link.click();
         }
     </script>
-    <footer>© 2025 PhotoBoxNizhan - Sembila E Mana Suaranyaaaa</footer>
+    <footer>© 2025 PhotoBoxNizhan - Sembilan E </footer> 
 </body>
 </html>
