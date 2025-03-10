@@ -136,39 +136,71 @@
         }
 
         function downloadPhotos() {
-    let canvasDownload = document.createElement('canvas');
-    let ctx = canvasDownload.getContext('2d');
+    const canvasDownload = document.createElement('canvas');
+    const ctx = canvasDownload.getContext('2d');
     canvasDownload.width = 1080;
-    canvasDownload.height = 1600;
+    canvasDownload.height = 1920;
 
-    let images = document.querySelectorAll('.photo-strip img');
+    const images = document.querySelectorAll('.photo-strip img');
     if (images.length < 4) {
         alert("Harap ambil 4 foto sebelum mengunduh!");
         return;
     }
 
+    // Warna latar belakang utama
+    ctx.fillStyle = "#4D301F";
+    ctx.fillRect(0, 0, canvasDownload.width, canvasDownload.height);
+
+    // Ukuran dan jarak antar foto
+    const photoWidth = 500;
+    const photoHeight = 680;
+    const padding = 20;
+    const totalPhotoWidth = 2 * (photoWidth + padding);
+    const totalPhotoHeight = 2 * (photoHeight + padding);
+
+    // **Posisikan gambar benar-benar di tengah**
+    const startX = (canvasDownload.width - totalPhotoWidth) / 2; // Pusatkan horizontal
+    const startY = (canvasDownload.height - totalPhotoHeight - 150) / 2; // Pusatkan vertikal dengan sedikit ruang untuk teks
+
     images.forEach((img, index) => {
-        let x = (index % 2) * 540;
-        let y = Math.floor(index / 2) * 720;
-        ctx.fillStyle = "#4D301F";
-        ctx.fillRect(x, y, 540, 720);
-        ctx.drawImage(img, x + 10, y + 10, 520, 700);
+        const x = startX + (index % 2) * (photoWidth + padding);
+        const y = startY + Math.floor(index / 2) * (photoHeight + padding);
+
+        // Latar belakang kotak foto
+        ctx.fillStyle = "#3A2215";
+        ctx.fillRect(x, y, photoWidth, photoHeight);
+
+        // Gambar dengan padding di dalam kotak
+        ctx.drawImage(img, x + 10, y + 10, photoWidth - 20, photoHeight - 20);
     });
 
-    // Tambahkan tulisan dengan jarak yang lebih baik
-    ctx.fillStyle = "#4D301F";
-    ctx.fillRect(0, 1420, 1080, 180); // Perbesar area footer untuk lebih banyak ruang
-    ctx.fillStyle = "white";
-    ctx.font = "50px Berkshire Swash";
-    ctx.textAlign = "center";
-    ctx.fillText("Buka Bersama Sembilan E", 540, 1480); // Geser ke atas sedikit
-    ctx.fillText("Mar.22.25", 540, 1540); // Beri jarak lebih jauh dari teks atas   
+    // **Tambahkan teks di bawah keempat gambar**
+    const textY = startY + totalPhotoHeight + 40; // Jarak teks ke gambar lebih proporsional
 
-    let link = document.createElement('a');
+    ctx.fillStyle = "white";
+    ctx.font = "bold 50px 'Berkshire Swash', cursive";
+    ctx.textAlign = "center";
+
+    ctx.fillText("Buka Bersama Sembilan E", canvasDownload.width / 2, textY);
+    ctx.fillText("Mar.22.25", canvasDownload.width / 2, textY + 70);
+
+    // **Tambahkan footer sebagai latar belakang di bawah teks**
+    const footerHeight = 180;
+    const footerY = canvasDownload.height - footerHeight;
+    
+    ctx.fillStyle = "#4D301F"; // Warna lebih lembut dan serasi
+    ctx.fillRect(0, footerY, canvasDownload.width, footerHeight);
+
+    // Simpan sebagai gambar
+    const link = document.createElement('a');
     link.download = 'PhotoBoxNizhan.jpg';
     link.href = canvasDownload.toDataURL('image/jpeg', 1.0);
     link.click();
 }
+
+
+
+
     </script>
     <footer>© 2025 PhotoBoxNizhan - Sembilan E </footer> 
 </body>
