@@ -66,7 +66,7 @@
             height: auto;
             border-radius: 10px;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
-            border: 5px solid #A27B5C;
+            border: 5px solid #4D301F;
         }
         .controls-container {
             display: flex;
@@ -150,19 +150,19 @@
     images.forEach((img, index) => {
         let x = (index % 2) * 540;
         let y = Math.floor(index / 2) * 720;
-        ctx.fillStyle = "#A27B5C";
+        ctx.fillStyle = "#4D301F";
         ctx.fillRect(x, y, 540, 720);
         ctx.drawImage(img, x + 10, y + 10, 520, 700);
     });
 
-    // Tambahkan tulisan "Buka Bersama Sembilan E" dan "Mar.22.25"
-    ctx.fillStyle = "#A27B5C";
-    ctx.fillRect(0, 1440, 1080, 160);
+    // Tambahkan tulisan dengan jarak yang lebih baik
+    ctx.fillStyle = "#4D301F";
+    ctx.fillRect(0, 1420, 1080, 180); // Perbesar area footer untuk lebih banyak ruang
     ctx.fillStyle = "white";
-    ctx.font = "50px Cinzel Decorative";
+    ctx.font = "50px Nunito";
     ctx.textAlign = "center";
-    ctx.fillText("Buka Bersama Sembilan E", 540, 1500);
-    ctx.fillText("Mar.22.25", 540, 1550);
+    ctx.fillText("Buka Bersama Sembilan E", 540, 1480); // Geser ke atas sedikit
+    ctx.fillText("Mar.22.25", 540, 1540); // Beri jarak lebih jauh dari teks atas   
 
     let link = document.createElement('a');
     link.download = 'PhotoBoxNizhan.jpg';
